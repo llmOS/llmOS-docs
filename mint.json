@@ -57,9 +57,9 @@
     }
   ],
   "footerSocials": {
-    "twitter": "x",
-    "github": "x",
-    "linkedin": "johannes"
+    "github": "https://github.com/opencopilotdev/opencopilot",
+    "twitter": "https://twitter.com/OpenCopilot",
+    "discord": "https://discord.gg/AmdF5d94vE"
   },
   "openapi": "https://llm.sidekik.ai/openapi.json"
 }
