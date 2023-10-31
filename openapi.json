@@ -11,8 +11,8 @@
     "paths": {
       "/v1/chat/completions": {
         "post": {
-          "summary": "Chat completion API endpoint",
-          "description": "Chat completion API endpoint",
+          "summary": "Chat Completion Endpoint",
+          "description": "Chat Completion Endpoint",
           "operationId": "endpoint_v1_chat_completions_post",
           "parameters": [
             {

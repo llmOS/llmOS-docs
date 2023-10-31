@@ -2,8 +2,8 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "llmOS",
   "logo": {
-    "dark": "/logo/llmos_darkmode_logo.svg",
-    "light": "/logo/llmos_lightmode_logo.svg"
+    "dark": "/logo/llmos_logo_dark.svg",
+    "light": "/logo/llmos_logo_light.svg"
   },
   "favicon": "/favicon.png",
   "colors": {
@@ -29,12 +29,6 @@
     "name": "Dashboard",
     "url": "https://dashboard.mintlify.com"
   },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
   "anchors": [
     {
       "name": "GitHub",
@@ -55,17 +49,17 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["introduction", "quickstart", "development"]
+      "pages": ["introduction"]
     },
     {
       "group": "API Documentation",
-      "pages": ["api-reference/chat-completion-api-endpoint"]
+      "pages": ["api-reference/chat-completion-endpoint"]
     }
   ],
   "footerSocials": {
-    "twitter": "https://twitter.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "twitter": "x",
+    "github": "x",
+    "linkedin": "johannes"
   },
   "openapi": "https://llm.sidekik.ai/openapi.json"
 }
