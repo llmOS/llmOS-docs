@@ -33,17 +33,17 @@
     {
       "name": "GitHub",
       "icon": "github",
-      "url": "x"
+      "url": "https://github.com/llmOS"
     },
     {
       "name": "Discord",
       "icon": "discord",
-      "url": "x"
+      "url": "https://discord.com/invite/38c5cxE4Zb"
     },
     {
       "name": "Twitter",
       "icon": "twitter",
-      "url": "x"
+      "url": "https://twitter.com/llmOS_"
     }
   ],
   "navigation": [
@@ -61,11 +61,5 @@
     "twitter": "https://twitter.com/OpenCopilot",
     "discord": "https://discord.gg/AmdF5d94vE"
   },
-  "openapi": "https://llm.sidekik.ai/openapi.json",
-  "api": {
-    "auth": {
-        "method": "bearer",
-        "inputPrefix": "demo-api-key"
-      }
-  }
+  "openapi": "/openapi.json"
 }
