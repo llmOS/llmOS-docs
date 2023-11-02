@@ -64,8 +64,7 @@
   "openapi": "https://llm.sidekik.ai/openapi.json",
   "api": {
     "auth": {
-        "method": "bearer",
-        "inputPrefix": "demo-api-key"
+        "method": "bearer"
       }
   }
 }
