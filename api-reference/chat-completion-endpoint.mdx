@@ -2,20 +2,26 @@
 title: Chat Completion Endpoint
 description: Follows the exact schema as OpenAI's chat completion API. llmOS is still in alpha so every user has 500M tokens per month and can do 100 request per minute.
 api: 'POST https://api.llmos.dev/v1/chat/completions'
+authMethod: "bearer"
 ---
 
+## NB!
+**Required to fill in 'content' and 'role' under 'body' -> 'messages'.**
+
 <h3>Authorization</h3>
-<ParamField header="Authorization" initialValue="Bearer demo-api-key" type="string" required>Bearer required</ParamField>
+<ResponseField name="Authorization" type="string" required>
+  Bearer authentication header of the form Bearer 'key', where 'key' is your api key. Use test key or get yours from [llmOS dashboard](https://www.llmos.dev/profile).
+</ResponseField>
 
 <h3>Body</h3>
-<ParamField body="model" initialValue="mistral-7b-instruct" type="string" required>ID of the model to use. ["mistral-7b-instruct""]</ParamField>
+<ParamField body="model" initialValue="mistral-7b-instruct" type="string" required>ID of the model to use. ["mistral-7b-instruct"]</ParamField>
 
 <ParamField body="messages" type="array" required>
   A list of messages comprising the conversation so far.
   <Expandable title="Message" defaultOpen>
     <ParamField body="content" placeholder="Hello!" type="string" required>The contents of the message. `content is required for all messages, and may be null for assistant messages with function calls.</ParamField>
     <ParamField body="role" placeholder="user" type="string" required>Role ["user", "assistant"]</ParamField>
-    <ParamField body="name" initialValue="" type="string">The name of the author of this message. name is required if role is function, and it should be the name of the function whose response is in the content. May contain a-z, A-Z, 0-9, and underscores, with a maximum length of 64 characters.</ParamField>
+    <ParamField body="name" type="string">The name of the author of this message. name is required if role is function, and it should be the name of the function whose response is in the content. May contain a-z, A-Z, 0-9, and underscores, with a maximum length of 64 characters.</ParamField>
   </Expandable>
 </ParamField>
 
