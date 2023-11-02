@@ -1,271 +1,306 @@
 {
-    "openapi": "3.1.0",
-    "info": {
-      "title": "API",
-      "description": "API version 1.0.0",
-      "version": "1.0.0",
-      "contact": { "name": "", "email": "" },
-      "x-logo": { "url": "" }
-    },
-    "servers": [{ "url": "https://llm.sidekik.ai" }],
-    "paths": {
-      "/v1/chat/completions": {
-        "post": {
-          "summary": "Chat Completion Endpoint",
-          "description": "Chat Completion Endpoint",
-          "operationId": "endpoint_v1_chat_completions_post",
-          "parameters": [
-            {
-              "name": "authorization",
-              "in": "header",
-              "required": false,
-              "schema": { "type": "string", "title": "Authorization" }
+  "openapi": "3.1.0",
+  "info": {
+    "title": "API",
+    "description": "API version 1.0.0",
+    "version": "1.0.0"
+  },
+  "servers": [
+    { "url": "https://api.llmos.dev" }
+  ],
+  "paths": {
+    "/v1/chat/completions": {
+      "post": {
+        "summary": "Endpoint",
+        "operationId": "endpoint_v1_chat_completions_post",
+        "security": [{ "APIKeyHeader": [] }],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ChatCompletionRequest" }
             }
-          ],
-          "requestBody": {
-            "required": true,
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ChatCompletionRequest" }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": { "application/json": { "schema": {} } }
-            },
-            "422": {
-              "description": "Validation Error",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
-                }
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
               }
             }
           }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiInfo": {
+        "properties": {
+          "title": { "type": "string", "title": "Title" },
+          "description": { "type": "string", "title": "Description" },
+          "version": { "type": "string", "title": "Version" }
+        },
+        "type": "object",
+        "required": ["title", "description", "version"],
+        "title": "ApiInfo",
+        "example": { "description": "API", "title": "API", "version": "0.1" }
+      },
+      "ChatCompletionRequest": {
+        "properties": {
+          "messages": {
+            "items": { "$ref": "#/components/schemas/Message" },
+            "type": "array",
+            "title": "Messages",
+            "description": "A list of messages comprising the conversation so far. "
+          },
+          "model": {
+            "type": "string",
+            "title": "Model",
+            "description": "ID of the model to use."
+          },
+          "frequency_penalty": {
+            "type": "string",
+            "title": "Frequency Penalty",
+            "description": "Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim."
+          },
+          "logit_bias": {
+            "anyOf": [{ "type": "object" }, { "type": "null" }],
+            "title": "Logit Bias",
+            "description": "Modify the likelihood of specified tokens appearing in the completion."
+          },
+          "max_tokens": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Max Tokens",
+            "description": "The maximum number of tokens to generate in the chat completion."
+          },
+          "n": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "N",
+            "description": "How many chat completion choices to generate for each input message."
+          },
+          "presence_penalty": {
+            "anyOf": [
+              { "type": "number" },
+              { "items": {}, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Presence Penalty",
+            "description": "Up to 4 sequences where the API will stop generating further tokens.",
+            "default": 0
+          },
+          "stream": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Stream",
+            "description": "If set, partial message deltas will be sent, like in ChatGPT.",
+            "default": false
+          },
+          "temperature": {
+            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "title": "Temperature",
+            "description": "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.",
+            "default": 1
+          },
+          "top_p": {
+            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "title": "Top P",
+            "description": "An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.",
+            "default": 1
+          },
+          "user": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "User",
+            "description": "A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse."
+          }
+        },
+        "type": "object",
+        "required": ["messages", "model"],
+        "title": "ChatCompletionRequest",
+        "example": {
+          "messages": [
+            { "content": "You are a helpful assistant.", "role": "system" },
+            { "content": "Hello!", "role": "user" }
+          ],
+          "model": "mistral-7b-instruct"
         }
       },
-      "/": {
-        "get": {
-          "summary": "Returns API information",
-          "description": "Returns API information",
-          "operationId": "root__get",
-          "responses": {
-            "200": {
-              "description": "API information with title, description and version.",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/ApiInfo" }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "components": {
-      "schemas": {
-        "ApiInfo": {
-          "properties": {
-            "title": { "type": "string", "title": "Title" },
-            "description": { "type": "string", "title": "Description" },
-            "version": { "type": "string", "title": "Version" }
+      "CreateUserRequest": {
+        "properties": {
+          "user_role": {
+            "type": "string",
+            "title": "User Role",
+            "description": "User role"
           },
-          "type": "object",
-          "required": ["title", "description", "version"],
-          "title": "ApiInfo",
-          "example": { "description": "API", "title": "API", "version": "0.1" }
-        },
-        "ChatCompletionRequest": {
-          "properties": {
-            "messages": {
-              "items": { "$ref": "#/components/schemas/Message" },
-              "type": "array",
-              "title": "Messages",
-              "description": "A list of messages comprising the conversation so far. "
-            },
-            "model": {
-              "type": "string",
-              "title": "Model",
-              "description": "ID of the model to use."
-            },
-            "frequency_penalty": {
-              "type": "string",
-              "title": "Frequency Penalty",
-              "description": "Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim."
-            },
-            "function_call": {
-              "anyOf": [
-                { "type": "string" },
-                { "type": "object" },
-                { "type": "null" }
-              ],
-              "title": "Function Call",
-              "description": "Controls how the model calls functions. \"none\" means the model will not call a function and instead generates a message. \"auto\" means the model can pick between generating a message or calling a function. Specifying a particular function via {\"name\": \"my_function\"} forces the model to call that function. \"none\" is the default when no functions are present. \"auto\" is the default if functions are present."
-            },
-            "functions": {
-              "anyOf": [
-                {
-                  "items": { "$ref": "#/components/schemas/Function" },
-                  "type": "array"
-                },
-                { "type": "null" }
-              ],
-              "title": "Functions",
-              "description": "A list of functions the model may generate JSON inputs for."
-            },
-            "logit_bias": {
-              "anyOf": [{ "type": "object" }, { "type": "null" }],
-              "title": "Logit Bias",
-              "description": "Modify the likelihood of specified tokens appearing in the completion."
-            },
-            "max_tokens": {
-              "anyOf": [{ "type": "integer" }, { "type": "null" }],
-              "title": "Max Tokens",
-              "description": "The maximum number of tokens to generate in the chat completion."
-            },
-            "n": {
-              "anyOf": [{ "type": "integer" }, { "type": "null" }],
-              "title": "N",
-              "description": "How many chat completion choices to generate for each input message."
-            },
-            "presence_penalty": {
-              "anyOf": [
-                { "type": "number" },
-                { "items": {}, "type": "array" },
-                { "type": "null" }
-              ],
-              "title": "Presence Penalty",
-              "description": "Up to 4 sequences where the API will stop generating further tokens.",
-              "default": 0
-            },
-            "stream": {
-              "anyOf": [{ "type": "boolean" }, { "type": "null" }],
-              "title": "Stream",
-              "description": "If set, partial message deltas will be sent, like in ChatGPT.",
-              "default": false
-            },
-            "temperature": {
-              "anyOf": [{ "type": "number" }, { "type": "null" }],
-              "title": "Temperature",
-              "description": "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.",
-              "default": 1
-            },
-            "top_p": {
-              "anyOf": [{ "type": "number" }, { "type": "null" }],
-              "title": "Top P",
-              "description": "An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.",
-              "default": 1
-            },
-            "user": {
-              "anyOf": [{ "type": "string" }, { "type": "null" }],
-              "title": "User",
-              "description": "A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse."
-            }
+          "building": {
+            "type": "string",
+            "title": "Building",
+            "description": "What is the user building?"
           },
-          "type": "object",
-          "required": ["messages", "model"],
-          "title": "ChatCompletionRequest",
-          "example": {
-            "messages": [
-              { "content": "You are a helpful assistant.", "role": "system" },
-              { "content": "Hello!", "role": "user" }
-            ],
-            "model": "gpt-3.5-turbo"
+          "has_paying_customers": {
+            "type": "boolean",
+            "title": "Has Paying Customers",
+            "description": "Do you have paying customers?"
+          },
+          "project_stage": {
+            "type": "string",
+            "title": "Project Stage",
+            "description": "What is the project stage?"
+          },
+          "llm_monthly_cost": {
+            "type": "string",
+            "title": "Llm Monthly Cost",
+            "description": "What is the project stage?"
           }
         },
-        "Function": {
-          "properties": {
-            "description": {
-              "anyOf": [{ "type": "string" }, { "type": "null" }],
-              "title": "Description",
-              "description": "A description of what the function does, used by the model to choose when and how to call the function."
-            },
-            "name": {
-              "type": "string",
-              "title": "Name",
-              "description": "The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64."
-            },
-            "parameters": {
-              "type": "object",
-              "title": "Parameters",
-              "description": "The parameters the functions accepts, described as a JSON Schema object. See the guide for examples, and the JSON Schema reference for documentation about the format. To describe a function that accepts no parameters, provide the value {\"type\": \"object\", \"properties\": {}}."
-            }
+        "type": "object",
+        "required": [
+          "user_role",
+          "building",
+          "has_paying_customers",
+          "project_stage",
+          "llm_monthly_cost"
+        ],
+        "title": "CreateUserRequest"
+      },
+      "Function": {
+        "properties": {
+          "description": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description",
+            "description": "A description of what the function does, used by the model to choose when and how to call the function."
           },
-          "type": "object",
-          "required": ["name", "parameters"],
-          "title": "Function"
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64."
+          },
+          "parameters": {
+            "type": "object",
+            "title": "Parameters",
+            "description": "The parameters the functions accepts, described as a JSON Schema object. See the guide for examples, and the JSON Schema reference for documentation about the format. To describe a function that accepts no parameters, provide the value {\"type\": \"object\", \"properties\": {}}."
+          }
         },
-        "FunctionCall": {
-          "properties": {
-            "arguments": {
-              "type": "string",
-              "title": "Arguments",
-              "description": "The name and arguments of a function that should be called, as generated by the model."
-            },
-            "name": {
-              "type": "string",
-              "title": "Name",
-              "description": "The name of the function to call."
-            }
+        "type": "object",
+        "required": ["name", "parameters"],
+        "title": "Function"
+      },
+      "FunctionCall": {
+        "properties": {
+          "arguments": {
+            "type": "string",
+            "title": "Arguments",
+            "description": "The name and arguments of a function that should be called, as generated by the model."
           },
-          "type": "object",
-          "required": ["arguments", "name"],
-          "title": "FunctionCall"
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The name of the function to call."
+          }
         },
-        "HTTPValidationError": {
-          "properties": {
-            "detail": {
-              "items": { "$ref": "#/components/schemas/ValidationError" },
-              "type": "array",
-              "title": "Detail"
-            }
+        "type": "object",
+        "required": ["arguments", "name"],
+        "title": "FunctionCall"
+      },
+      "GetUserResponse": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "description": "User email"
           },
-          "type": "object",
-          "title": "HTTPValidationError"
+          "api_key": {
+            "type": "string",
+            "title": "Api Key",
+            "description": "User api_key"
+          },
+          "user_role": {
+            "type": "string",
+            "title": "User Role",
+            "description": "User user_role"
+          },
+          "building": {
+            "type": "string",
+            "title": "Building",
+            "description": "What is the user building?"
+          },
+          "has_paying_customers": {
+            "type": "boolean",
+            "title": "Has Paying Customers",
+            "description": "Do you have paying customers?"
+          },
+          "project_stage": {
+            "type": "string",
+            "title": "Project Stage",
+            "description": "What is the project stage?"
+          },
+          "llm_monthly_cost": {
+            "type": "string",
+            "title": "Llm Monthly Cost",
+            "description": "What is the project stage?"
+          }
         },
-        "Message": {
-          "properties": {
-            "content": {
-              "anyOf": [{ "type": "string" }, { "type": "null" }],
-              "title": "Content",
-              "description": "The contents of the message. `content is required for all messages, and may be null for assistant messages with function calls."
-            },
-            "function_call": {
-              "anyOf": [
-                { "$ref": "#/components/schemas/FunctionCall" },
-                { "type": "null" }
-              ],
-              "description": "The name and arguments of a function that should be called, as generated by the model."
-            },
-            "role": { "type": "string", "title": "Role", "description": "Role" },
-            "name": {
-              "anyOf": [{ "type": "string" }, { "type": "null" }],
-              "title": "Name",
-              "description": "The name of the author of this message. name is required if role is function, and it should be the name of the function whose response is in the content. May contain a-z, A-Z, 0-9, and underscores, with a maximum length of 64 characters."
-            }
-          },
-          "type": "object",
-          "required": ["content", "role"],
-          "title": "Message"
+        "type": "object",
+        "required": ["email", "api_key"],
+        "title": "GetUserResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
         },
-        "ValidationError": {
-          "properties": {
-            "loc": {
-              "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
-              "type": "array",
-              "title": "Location"
-            },
-            "msg": { "type": "string", "title": "Message" },
-            "type": { "type": "string", "title": "Error Type" }
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Message": {
+        "properties": {
+          "content": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Content",
+            "description": "The contents of the message. `content is required for all messages, and may be null for assistant messages with function calls."
           },
-          "type": "object",
-          "required": ["loc", "msg", "type"],
-          "title": "ValidationError"
-        }
+          "role": { "type": "string", "title": "Role", "description": "Role" },
+          "name": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Name",
+            "description": "The name of the author of this message. name is required if role is function, and it should be the name of the function whose response is in the content. May contain a-z, A-Z, 0-9, and underscores, with a maximum length of 64 characters."
+          }
+        },
+        "type": "object",
+        "required": ["content", "role"],
+        "title": "Message"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
       }
     },
-    "x-readme": { "samples-languages": ["curl", "node", "javascript", "python"] }
-  }
-  
+    "securitySchemes": {
+      "APIKeyHeader": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    }
+  },
+  "x-readme": { "samples-languages": ["curl", "node", "javascript", "python"] }
+}
