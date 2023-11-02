@@ -63,6 +63,7 @@
   },
   "openapi": "https://llm.sidekik.ai/openapi.json",
   "api": {
+    "baseUrl": "https://api.llmos.dev",
     "auth": {
         "method": "bearer"
       }

@@ -1,5 +1,20 @@
 ---
 title: Chat Completion Endpoint
 description: Follows the exact schema as OpenAI's chat completion API. llmOS is still in alpha so every user has 500M tokens per month and can do 100 request per minute.
-openapi: post /v1/chat/completions
+api: 'POST https://api.llmos.dev/v1/chat/completions'
 ---
+
+<h3>Authorization</h3>
+<ParamField header="Authorization" initialValue="Berarer lol" type="string"></ParamField>
+
+<h3>Body</h3>
+
+
+
+<ParamField body="model" initialValue="lol" type="string">
+  
+</ParamField>
+
+<ParamField body="messages3" type="string">
+  The id of the user
+</ParamField>

@@ -117,7 +117,7 @@
           "user": {
             "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "User",
-            "description": "A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse."
+            "description": "A unique identifier representing your end-user, which can help monitor and detect abuse."
           }
         },
         "type": "object",
@@ -128,7 +128,7 @@
             { "content": "You are a helpful assistant.", "role": "system" },
             { "content": "Hello!", "role": "user" }
           ],
-          "model": "mistral-7b-instruct"
+          "model": "mistralai/Mistral-7B-Instruct-v0.1"
         }
       },
       "CreateUserRequest": {
