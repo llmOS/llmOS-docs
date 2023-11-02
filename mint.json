@@ -61,5 +61,8 @@
     "twitter": "https://twitter.com/OpenCopilot",
     "discord": "https://discord.gg/AmdF5d94vE"
   },
-  "openapi": "/openapi.json"
+  "openapi": "https://llm.sidekik.ai/openapi.json",
+  "api": {
+    "baseUrl": "https://api.llmos.dev"
+  }
 }
